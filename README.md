@@ -1,7 +1,5 @@
 ﻿# Small and stupid lib for parse ScrappySharp results into custom types
 
-## How to use
-
 ### Implement HtmlNode parser, with all the features of [ScrappySharp](https://github.com/rflechner/ScrapySharp) selectors
 
 ``` C#
@@ -11,7 +9,7 @@
     }
 ```
 
-### As example
+### Parsers implementations example
 
 ``` C#
     public class HelloWorldParser : IParser<string>
@@ -31,7 +29,7 @@
     }
 ```
 
-### And how use it
+### How to use
 
 ```C#
     var hama = new Hamahakki.Agent();
