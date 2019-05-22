@@ -38,7 +38,7 @@
     hama.FromWeb("https://google.com")
         .AddParserJob(new HelloWorldParser(), stringValue => {
             // stringValue - is result of HelloWorldParser work.
-            // In current example value is equal 42  
+            // In current example value is equal 'Hello world!'
         })
         .AddParserJob(new FortyTwoParser(), intValue => {
             // intValue - is result of FortyTwoParser work.
