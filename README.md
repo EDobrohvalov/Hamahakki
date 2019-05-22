@@ -1,4 +1,4 @@
-﻿# Small and stupid lib for parse ScrappySharp results into custom types
+﻿# Small library for web-scrapping with ScrappySharp, and wrapping results into custom types
 
 ### Implement HtmlNode parser, with all the features of [ScrappySharp](https://github.com/rflechner/ScrapySharp) selectors
 
