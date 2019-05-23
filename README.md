@@ -1,6 +1,12 @@
-﻿# Small library for web-scrapping with ScrappySharp, and wrapping results into custom types
+﻿# Getting started
+ 
+Hamahakki - it's simple wrapper for [ScrappySharp](https://github.com/rflechner/ScrapySharp) for minification boilerplate code for actions like HTTP request, handling html response and parse it to custom structures.
 
-### Implement HtmlNode parser, with all the features of [ScrappySharp](https://github.com/rflechner/ScrapySharp) selectors
+## Basic examples of usages
+
+### 
+
+### Implement IParser interface
 
 ``` C#
     public interface IParser<T>
@@ -9,7 +15,7 @@
     }
 ```
 
-### Parsers implementations example
+### Like this, for example.
 
 ``` C#
     public class HelloWorldParser : IParser<string>
@@ -29,7 +35,7 @@
     }
 ```
 
-### How to use
+### Define scenario with result handlers, and run angent.
 
 ```C#
     var hama = new Hamahakki.Agent();
