@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
 
@@ -8,22 +9,16 @@ namespace Hamahakki
     {
         #region Private members
 
-        private readonly IRequestFactory requestFactory = new RequestFactory();
         private readonly IUrlParamsBuilder urlParamsBuilder = new UrlParamsBuilder();
-        private readonly IJobsStorage jobsStorage = new JobsStorage();
+        private readonly List<IResponseTasksProvider> handlers = new List<IResponseTasksProvider>();
 
         #endregion
-        internal Agent(
-            IRequestFactory requestFactory,
-            IUrlParamsBuilder urlParamsBuilder,
-            IJobsStorage jobsStorage)
+        internal Agent(IUrlParamsBuilder urlParamsBuilder)
         {
-            this.requestFactory = requestFactory;
             this.urlParamsBuilder = urlParamsBuilder;
-            this.jobsStorage = jobsStorage;
         }
 
-        public Agent() : this(new RequestFactory(), new UrlParamsBuilder(), new JobsStorage())
+        public Agent() : this(new UrlParamsBuilder())
         {
         }
 
@@ -31,26 +26,28 @@ namespace Hamahakki
 
         public IRequestHandler FromNode(HtmlNode node)
         {
-            var req = requestFactory.CreateHtmlRequest(node);
+            var req = new RequestToHtml(node);
             return MakeRequestHandler(req);
         }
 
         public IRequestHandler FromWeb(string url, params (string arg, string value)[] args)
         {
-            var req = requestFactory.CreateWebRequest(urlParamsBuilder.BuildUrl(url, args));
-            return MakeRequestHandler(req);
+            return FromWeb(urlParamsBuilder.BuildUrl(url, args));
         }
 
         public IRequestHandler FromWeb(string url)
         {
-            var req = requestFactory.CreateWebRequest(url);
+            var req = new RequestToWeb(url);
             return MakeRequestHandler(req);
         }
 
         public async Task Run()
         {
-            await jobsStorage.DoRequestActions();
-            await jobsStorage.DoResponceActions();
+            foreach (var item in handlers)
+            {
+                await item.Do();
+            }
+            await Task.WhenAll(handlers.SelectMany(h => h.Tasks));
         }
 
         #endregion
@@ -58,8 +55,8 @@ namespace Hamahakki
         #region Private methods
         private IRequestHandler MakeRequestHandler(IRequestable request)
         {
-            var handler = new RequestHandler(jobsStorage, request);
-            jobsStorage.AddRequestAction(request);
+            var handler = new RequestHandler(request);
+            handlers.Add(handler);
             return handler;
         }
         #endregion

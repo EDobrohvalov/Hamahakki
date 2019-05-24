@@ -1,21 +1,22 @@
 ﻿using HtmlAgilityPack;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Hamahakki
 {
-    internal class RequestToHtml : IRequestable
-    {
-        private readonly HtmlNode htmlNode;
 
-        public RequestToHtml(HtmlNode htmlNode)
+    internal class RequestToHtml : Requestable
+    {
+        private readonly HtmlNode resultNode;
+        public RequestToHtml(HtmlNode htmlNode) : base()
         {
-            this.htmlNode = htmlNode ?? throw new ArgumentNullException(nameof(htmlNode));
+            resultNode = htmlNode ?? throw new ArgumentNullException(nameof(htmlNode));
         }
 
-        public async Task<HtmlNode> Request()
+        protected override Task<HtmlNode> RequestTaskAction()
         {
-            return await Task.FromResult(htmlNode);
+            return new Task<HtmlNode>(() => resultNode);
         }
     }
 

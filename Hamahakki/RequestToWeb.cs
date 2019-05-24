@@ -5,26 +5,27 @@ using System.Threading.Tasks;
 
 namespace Hamahakki
 {
-    internal class RequestToWeb : IRequestable
+    internal class RequestToWeb : Requestable
     {
         private static ScrapingBrowser _browser = new ScrapingBrowser();
-
         private readonly string url;
         private WebPage htmlPage;
 
-        public RequestToWeb(string url)
+        public RequestToWeb(string url) :base()
         {
             this.url = url;
         }
 
-        public async Task<HtmlNode> Request()
+        protected override Task<HtmlNode> RequestTaskAction()
         {
-            if (htmlPage == null)
+            return new Task<HtmlNode>(() =>
             {
-                htmlPage = await _browser.NavigateToPageAsync(new Uri(url));
-            }
-            return htmlPage.Html;
+                if (htmlPage == null)
+                {
+                    htmlPage = _browser.NavigateToPage(new Uri(url));
+                }
+                return htmlPage.Html;
+            });
         }
     }
-
 }
