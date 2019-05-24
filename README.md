@@ -35,7 +35,7 @@ Hamahakki - it's simple wrapper for [ScrappySharp](https://github.com/rflechner/
     }
 ```
 
-### Define scenario with result handlers, and run angent.
+### Define scenario with result handlers, and run agent.
 
 ```C#
     var hama = new Hamahakki.Agent();
