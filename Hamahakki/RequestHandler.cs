@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Hamahakki
 {
-    internal class RequestHandler : IRequestHandler, IResponseTasksProvider
+    internal class RequestHandler : IRequestHandler, ITasksHolder
     {
         private readonly IRequestable request;
         private List<Task> _tasks = new List<Task>();
@@ -17,7 +17,7 @@ namespace Hamahakki
 
         public IEnumerable<Task> Tasks => _tasks;
 
-        public IRequestHandler AddHtmlHandler(Action<HtmlNode> handler)
+        public IRequestHandler RawHtmlNode(Action<HtmlNode> handler)
         {
             AddJob(response =>
             {
@@ -26,7 +26,7 @@ namespace Hamahakki
             return this;
         }
 
-        public IRequestHandler AddParserJob<T>(IParser<T> htmlParser, Action<T> handler)
+        public IRequestHandler ParseTo<T>(IParser<T> htmlParser, Action<T> handler)
         {
             AddJob(response =>
             {
@@ -35,7 +35,7 @@ namespace Hamahakki
             return this;
         }
 
-        public async Task Do()
+        public async Task RunTasks()
         {
             await request.Request();
         }

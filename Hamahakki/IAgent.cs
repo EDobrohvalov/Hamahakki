@@ -5,9 +5,9 @@ namespace Hamahakki
 {
     public interface IAgent 
     {
-        IRequestHandler FromWeb(string url, params (string arg, string value)[] args);
-        IRequestHandler FromWeb(string url);
-        IRequestHandler FromNode(HtmlNode node);
+        IRequestHandler From(string url, params (string arg, string value)[] args);
+        IRequestHandler From(string url);
+        IRequestHandler From(HtmlNode node);
         Task Run();
     }
 

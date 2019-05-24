@@ -32,10 +32,11 @@ namespace Tests
             HtmlNode actualNode = null;
 
             var hama = new Hamahakki.Agent();
-            hama.FromWeb("http://google.com")
-                .AddParserJob(new HelloWorldParser(), str => actualSting = str)
-                .AddParserJob(new FortyTwoParser(), v => actualInt = v)
-                .AddHtmlHandler(v => actualNode = v);
+            hama.From("http://google.com")
+                .ParseTo<string>(new HelloWorldParser(), str => actualSting = str)
+                .ParseTo<int>(new FortyTwoParser(), v => actualInt = v)
+                .RawHtmlNode(v => actualNode = v);
+
             await hama.Run();
 
             Assert.AreEqual("Hello world!", actualSting);

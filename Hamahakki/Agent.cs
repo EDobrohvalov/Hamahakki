@@ -10,7 +10,7 @@ namespace Hamahakki
         #region Private members
 
         private readonly IUrlParamsBuilder urlParamsBuilder = new UrlParamsBuilder();
-        private readonly List<IResponseTasksProvider> handlers = new List<IResponseTasksProvider>();
+        private readonly List<ITasksHolder> taskHolders = new List<ITasksHolder>();
 
         #endregion
         internal Agent(IUrlParamsBuilder urlParamsBuilder)
@@ -24,18 +24,18 @@ namespace Hamahakki
 
         #region IAgent implementation
 
-        public IRequestHandler FromNode(HtmlNode node)
+        public IRequestHandler From(HtmlNode node)
         {
             var req = new RequestToHtml(node);
             return MakeRequestHandler(req);
         }
 
-        public IRequestHandler FromWeb(string url, params (string arg, string value)[] args)
+        public IRequestHandler From(string url, params (string arg, string value)[] args)
         {
-            return FromWeb(urlParamsBuilder.BuildUrl(url, args));
+            return From(urlParamsBuilder.BuildUrl(url, args));
         }
 
-        public IRequestHandler FromWeb(string url)
+        public IRequestHandler From(string url)
         {
             var req = new RequestToWeb(url);
             return MakeRequestHandler(req);
@@ -43,11 +43,11 @@ namespace Hamahakki
 
         public async Task Run()
         {
-            foreach (var item in handlers)
+            foreach (var taskHolder in taskHolders)
             {
-                await item.Do();
+                await taskHolder.RunTasks();
             }
-            await Task.WhenAll(handlers.SelectMany(h => h.Tasks));
+            await Task.WhenAll(taskHolders.SelectMany(h => h.Tasks));
         }
 
         #endregion
@@ -56,7 +56,7 @@ namespace Hamahakki
         private IRequestHandler MakeRequestHandler(IRequestable request)
         {
             var handler = new RequestHandler(request);
-            handlers.Add(handler);
+            taskHolders.Add(handler);
             return handler;
         }
         #endregion

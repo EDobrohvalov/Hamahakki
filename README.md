@@ -39,16 +39,16 @@ Hamahakki - it's simple wrapper for [ScrappySharp](https://github.com/rflechner/
 
 ```C#
     var hama = new Hamahakki.Agent();
-    hama.FromWeb("https://google.com")
-        .AddParserJob(new HelloWorldParser(), stringValue => {
+    hama.From("https://google.com")
+        .ParseTo<string>(new HelloWorldParser(), stringValue => {
             // stringValue - is result of HelloWorldParser work.
             // In current example value is equal 'Hello world!'
         })
-        .AddParserJob(new FortyTwoParser(), intValue => {
+        .ParseTo<int>(new FortyTwoParser(), intValue => {
             // intValue - is result of FortyTwoParser work.
             // In current example value is equal 42  
         })
-        .AddHtmlHandler(htmlNode => {
+        .RawHtmlNode(htmlNode => {
             // htmlNode - contain HTML code of http://google.com site
         });
     await hama.Run(); // waiting for execution all requests and all parsers jobs

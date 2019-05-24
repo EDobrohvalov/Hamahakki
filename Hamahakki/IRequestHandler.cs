@@ -7,14 +7,16 @@ namespace Hamahakki
 {
     public interface IRequestHandler
     {
-        IRequestHandler AddParserJob<T>(IParser<T> parser, Action<T> resultHandler);
-        IRequestHandler AddHtmlHandler(Action<HtmlNode> htmlHandler);
+        IRequestHandler ParseTo<T>(IParser<T> parser, Action<T> resultHandler);
+        IRequestHandler RawHtmlNode(Action<HtmlNode> htmlHandler);
     }
 
-    internal interface IResponseTasksProvider : IRequestHandler
+    internal interface ITasksHolder : IRequestHandler
     {
-        Task Do ();
-        IEnumerable<Task> Tasks {get;}
+        Task RunTasks();
+        IEnumerable<Task> Tasks { get; }
     }
+
+
 
 }
