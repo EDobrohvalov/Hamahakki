@@ -7,25 +7,31 @@ namespace Hamahakki
 {
     internal class RequestToWeb : Requestable
     {
-        private static ScrapingBrowser _browser = new ScrapingBrowser();
+        #region Members
+        private static ScrapingBrowser browser = new ScrapingBrowser();
         private readonly string url;
         private WebPage htmlPage;
+        #endregion
 
+        #region Ctor
         public RequestToWeb(string url) :base()
         {
             this.url = url;
         }
+        #endregion
 
+        #region Protected methods
         protected override Task<HtmlNode> RequestTaskAction()
         {
             return new Task<HtmlNode>(() =>
             {
                 if (htmlPage == null)
                 {
-                    htmlPage = _browser.NavigateToPage(new Uri(url));
+                    htmlPage = browser.NavigateToPage(new Uri(url));
                 }
                 return htmlPage.Html;
             });
         }
+        #endregion
     }
 }

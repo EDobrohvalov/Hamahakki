@@ -7,19 +7,30 @@ namespace Hamahakki
 {
     internal class RequestHandler : IRequestHandler, ITasksHolder
     {
+        #region Members
         private readonly IRequestable request;
-        private List<Task> _tasks = new List<Task>();
+        private readonly List<Task> tasks = new List<Task>();
+        #endregion
 
+        #region Ctor
         public RequestHandler(IRequestable request)
         {
             this.request = request;
         }
+        #endregion
 
-        public IEnumerable<Task> Tasks => _tasks;
+        #region ITasksHolder iplementation
+        public IEnumerable<Task> Tasks => tasks;
+        public async Task RunTasks()
+        {
+            await request.Request();
+        }
+        #endregion
 
+        #region IRequestHandler implementation
         public IRequestHandler RawHtmlNode(Action<HtmlNode> handler)
         {
-            AddJob(response =>
+            AddTask(response =>
             {
                 handler(response);
             });
@@ -28,21 +39,19 @@ namespace Hamahakki
 
         public IRequestHandler ParseTo<T>(IParser<T> htmlParser, Action<T> handler)
         {
-            AddJob(response =>
+            AddTask(response =>
             {
                 handler(htmlParser.Parse(response));
             });
             return this;
         }
+        #endregion
 
-        public async Task RunTasks()
+        #region Private methods
+        private void AddTask(Action<HtmlNode> action)
         {
-            await request.Request();
+            tasks.Add(request.AddHandlerAction(action));
         }
-
-        private void AddJob(Action<HtmlNode> action)
-        {
-            _tasks.Add(request.AddHandlerAction(action));
-        }
+        #endregion
     }
 }
