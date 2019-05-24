@@ -48,6 +48,7 @@ namespace Hamahakki
                 await taskHolder.RunTasks();
             }
             await Task.WhenAll(taskHolders.SelectMany(h => h.Tasks));
+            taskHolders.Clear();
         }
 
         #endregion
