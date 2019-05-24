@@ -5,16 +5,17 @@ using System.Threading.Tasks;
 
 namespace Hamahakki
 {
-    internal class RequestHandler : IRequestHandler
+    internal class RequestHandler : IRequestHandler, IResponseTasksProvider
     {
         private readonly IRequestable request;
-        private readonly IJobsStorage jobsStorage;
+        private List<Task> _tasks = new List<Task>();
 
-        public RequestHandler(IJobsStorage jobsStorage, IRequestable request)
+        public RequestHandler(IRequestable request)
         {
-            this.jobsStorage = jobsStorage;
             this.request = request;
         }
+
+        public IEnumerable<Task> Tasks => _tasks;
 
         public IRequestHandler AddHtmlHandler(Action<HtmlNode> handler)
         {
@@ -34,9 +35,14 @@ namespace Hamahakki
             return this;
         }
 
+        public async Task Do()
+        {
+            await request.Request();
+        }
+
         private void AddJob(Action<HtmlNode> action)
         {
-            jobsStorage.AddResponseAction(request, action);
+            _tasks.Add(request.AddHandlerAction(action));
         }
     }
 }
