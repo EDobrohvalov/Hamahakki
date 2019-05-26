@@ -1,7 +1,6 @@
-﻿using HtmlAgilityPack;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Threading.Tasks;
+using HtmlAgilityPack;
 
 namespace Hamahakki
 {
@@ -13,7 +12,7 @@ namespace Hamahakki
         #endregion
 
         #region Ctor
-        public RequestToHtml(HtmlNode htmlNode) : base()
+        public RequestToHtml(HtmlNode htmlNode)
         {
             resultNode = htmlNode ?? throw new ArgumentNullException(nameof(htmlNode));
         }

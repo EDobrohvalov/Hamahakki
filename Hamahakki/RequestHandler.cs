@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Hamahakki
 {
-    internal class RequestHandler : IRequestHandler, ITasksHolder
+    internal class RequestHandler : ITasksHolder
     {
         #region Members
         private readonly IRequestable request;
@@ -30,10 +30,7 @@ namespace Hamahakki
         #region IRequestHandler implementation
         public IRequestHandler RawHtmlNode(Action<HtmlNode> handler)
         {
-            AddTask(response =>
-            {
-                handler(response);
-            });
+            AddTask(handler);
             return this;
         }
 

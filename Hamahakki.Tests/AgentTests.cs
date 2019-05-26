@@ -1,10 +1,8 @@
-﻿using Hamahakki;
+﻿using System;
 using Moq;
 using NUnit.Framework;
-using System;
-using System.Threading.Tasks;
 
-namespace Tests
+namespace Hamahakki.Tests
 {
     [TestFixture]
     public class AgentTests

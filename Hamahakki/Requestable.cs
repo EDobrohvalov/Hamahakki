@@ -7,26 +7,27 @@ namespace Hamahakki
     internal abstract class Requestable : IRequestable
     {
         #region Members
-        protected readonly Task<HtmlNode> RequestTask;
+
+        private readonly Task<HtmlNode> requestTask;
         #endregion
 
         #region Ctor
         public Requestable()
         {
-            RequestTask = RequestTaskAction();
+            requestTask = RequestTaskAction();
         }
         #endregion
 
         #region IRequestable implementation
         public Task AddHandlerAction(Action<HtmlNode> action)
         {
-            return RequestTask.ContinueWith(request => action(request.Result));
+            return requestTask.ContinueWith(request => action(request.Result));
         }
 
         public async Task<HtmlNode> Request()
         {
-            RequestTask.Start();
-            return await RequestTask;
+            requestTask.Start();
+            return await requestTask;
         }
         #endregion
 

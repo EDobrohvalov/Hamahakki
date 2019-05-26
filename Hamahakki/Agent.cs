@@ -14,7 +14,7 @@ namespace Hamahakki
     {
         #region Private members
 
-        private readonly IUrlParamsBuilder urlParamsBuilder = new UrlParamsBuilder();
+        private readonly IUrlParamsBuilder urlParamsBuilder;
         private readonly List<ITasksHolder> taskHolders = new List<ITasksHolder>();
 
         #endregion
