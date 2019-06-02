@@ -9,7 +9,7 @@ namespace Hamahakki
         {
             if (baseUrl == null) throw new ArgumentNullException();
             if (args.Length == 0) return baseUrl;
-            return $"{baseUrl}?{string.Join('&', args.Select(arg => $"{arg.arg}={arg.value}"))}";
+            return $"{baseUrl}?{string.Join("&", args.Select(arg => $"{arg.arg}={arg.value}"))}";
         }
     }
 }
