@@ -10,20 +10,19 @@ using HtmlAgilityPack;
 
 namespace Hamahakki
 {
-    public class Agent : IAgent
+    public class RequestMaker : IRequestMaker
     {
         #region Private members
 
         private readonly IUrlParamsBuilder urlParamsBuilder;
-        private readonly List<ITasksHolder> taskHolders = new List<ITasksHolder>();
 
         #endregion
-        internal Agent(IUrlParamsBuilder urlParamsBuilder)
+        internal RequestMaker(IUrlParamsBuilder urlParamsBuilder)
         {
             this.urlParamsBuilder = urlParamsBuilder;
         }
 
-        public Agent() : this(new UrlParamsBuilder())
+        public RequestMaker() : this(new UrlParamsBuilder())
         {
         }
 
@@ -50,23 +49,12 @@ namespace Hamahakki
             return MakeRequestHandler(req);
         }
 
-        public async Task Run()
-        {
-            foreach (var taskHolder in taskHolders)
-            {
-                await taskHolder.RunTasks();
-            }
-            await Task.WhenAll(taskHolders.SelectMany(h => h.Tasks));
-            taskHolders.Clear();
-        }
-
         #endregion
 
         #region Private methods
         private IRequestHandler MakeRequestHandler(IRequestable request)
         {
             var handler = new RequestHandler(request);
-            taskHolders.Add(handler);
             return handler;
         }
         #endregion

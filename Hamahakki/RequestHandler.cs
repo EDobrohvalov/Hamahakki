@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Hamahakki
 {
-    internal class RequestHandler : ITasksHolder
+    internal class RequestHandler : IRequestHandler
     {
         #region Members
         private readonly IRequestable request;
@@ -20,10 +20,10 @@ namespace Hamahakki
         #endregion
 
         #region ITasksHolder iplementation
-        public IEnumerable<Task> Tasks => tasks;
-        public async Task RunTasks()
+        public async Task Run()
         {
             await request.Request();
+            await Task.WhenAll(tasks);
         }
         #endregion
 
@@ -50,5 +50,6 @@ namespace Hamahakki
             tasks.Add(request.AddHandlerAction(action));
         }
         #endregion
+
     }
 }
