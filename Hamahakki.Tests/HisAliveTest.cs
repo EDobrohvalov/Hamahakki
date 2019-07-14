@@ -31,13 +31,12 @@ namespace Tests
             var actualInt = 0;
             HtmlNode actualNode = null;
 
-            var hama = new Hamahakki.Agent();
-            hama.From("http://google.com")
+            var requestMaker = new Hamahakki.RequestMaker();
+            await requestMaker.From("http://google.com")
                 .ParseTo<string>(new HelloWorldParser(), str => actualSting = str)
                 .ParseTo<int>(new FortyTwoParser(), v => actualInt = v)
-                .RawHtmlNode(v => actualNode = v);
-
-            await hama.Run();
+                .RawHtmlNode(v => actualNode = v)
+                .Run();
 
             Assert.AreEqual("Hello world!", actualSting);
             Assert.AreEqual(42, actualInt);
