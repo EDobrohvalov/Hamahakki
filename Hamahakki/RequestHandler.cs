@@ -20,25 +20,28 @@ namespace Hamahakki
         #endregion
 
         #region ITasksHolder iplementation
-        public async Task Run()
+        public void Run()
         {
-            await request.Request();
-            await Task.WhenAll(tasks);
+            request.Request();
+            Task.WhenAll(tasks).Wait();
         }
         #endregion
 
         #region IRequestHandler implementation
+
+      
+
         public IRequestHandler RawHtmlNode(Action<HtmlNode> handler)
         {
             AddTask(handler);
             return this;
         }
 
-        public IRequestHandler ParseTo<T>(IParser<T> htmlParser, Action<T> handler)
+        public IRequestHandler ParseTo<T>(IParser<T> parser, Action<T> action)
         {
             AddTask(response =>
             {
-                handler(htmlParser.Parse(response));
+               action(parser.Parse(response));
             });
             return this;
         }

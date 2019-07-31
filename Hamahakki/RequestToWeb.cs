@@ -40,6 +40,7 @@ namespace Hamahakki
                 {
                     htmlPage = browser.NavigateToPage(new Uri(url));
                 }
+
                 return htmlPage.Html;
             });
         }

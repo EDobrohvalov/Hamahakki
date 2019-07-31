@@ -25,17 +25,17 @@ namespace Tests
     {
 
         [Test]
-        public async Task Run()
+        public void Run()
         {
             var actualSting = "";
             var actualInt = 0;
             HtmlNode actualNode = null;
 
             var requestMaker = new Hamahakki.RequestMaker();
-            await requestMaker.From("http://google.com")
+            requestMaker.From("http://google.com")
                 .ParseTo<string>(new HelloWorldParser(), str => actualSting = str)
                 .ParseTo<int>(new FortyTwoParser(), v => actualInt = v)
-                .RawHtmlNode(v => actualNode = v)
+                .RawHtmlNode(v =>  actualNode = v)
                 .Run();
 
             Assert.AreEqual("Hello world!", actualSting);

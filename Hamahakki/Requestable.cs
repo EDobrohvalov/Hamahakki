@@ -19,15 +19,15 @@ namespace Hamahakki
         #endregion
 
         #region IRequestable implementation
+        
         public Task AddHandlerAction(Action<HtmlNode> action)
         {
             return requestTask.ContinueWith(request => action(request.Result));
         }
 
-        public async Task<HtmlNode> Request()
+        public void Request()
         {
             requestTask.Start();
-            return await requestTask;
         }
         #endregion
 

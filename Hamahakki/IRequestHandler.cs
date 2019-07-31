@@ -6,8 +6,8 @@ namespace Hamahakki
 {
     public interface IRequestHandler 
     {
-        IRequestHandler ParseTo<T>(IParser<T> parser, Action<T> resultHandler);
-        IRequestHandler RawHtmlNode(Action<HtmlNode> htmlHandler);
-        Task Run();
+        IRequestHandler ParseTo<T>(IParser<T> parser, Action<T> action);
+        IRequestHandler RawHtmlNode(Action<HtmlNode> handler);
+        void Run();
     }
 }
