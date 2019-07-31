@@ -38,7 +38,7 @@ Hamahakki - it's simple wrapper for [ScrappySharp](https://github.com/rflechner/
 ### Define scenario with result handlers, and run agent.
 
 ```C#
-    var hama = new Hamahakki.Agent();
+    var hama = new Hamahakki.RequestMaker();
     hama.From("https://google.com")
         .ParseTo<string>(new HelloWorldParser(), stringValue => {
             // stringValue - is result of HelloWorldParser work.
@@ -51,5 +51,5 @@ Hamahakki - it's simple wrapper for [ScrappySharp](https://github.com/rflechner/
         .RawHtmlNode(htmlNode => {
             // htmlNode - contain HTML code of http://google.com site
         });
-    await hama.Run(); // waiting for execution all requests and all parsers jobs
+    hama.Run(); // waiting for execution all requests and all parsers jobs
 ```
